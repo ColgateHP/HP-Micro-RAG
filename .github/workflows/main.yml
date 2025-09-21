@@ -1,26 +1,61 @@
-name: Advanced RAG Knowledge Graph Builder (Docker)
+name: Advanced RAG Knowledge Graph Builder
 
 on:
   workflow_dispatch:
     inputs:
       topic:
-        description: '培养基管理知识图谱'
+        description: '知识图谱的主题 (例如: 培养基管理)'
         required: true
         default: '培养基管理'
 
 jobs:
   build-and-run:
+    # 使用标准的Ubuntu最新版虚拟机
     runs-on: ubuntu-latest
+
     steps:
+    # 步骤1：检出您的代码
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Build and Run Docker Container
+    # 步骤2：设置Python 3.11环境
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    # 步骤3：配置缓存
+    # 这是保证稳定性和速度的关键
+    - name: Cache dependencies and PaddleOCR models
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/pip
+          /home/runner/.paddleocr/
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    # 步骤4：安装系统级依赖
+    # 直接在虚拟机中运行，比Docker更透明
+    - name: Install system dependencies
       run: |
-        docker build -t knowledge-graph-builder .
-        docker run \
-          --env GCP_SA_KEY='${{ secrets.GCP_SA_KEY }}' \
-          --env OPENAI_API_KEY='${{ secrets.OPENAI_API_KEY }}' \
-          --env OPENAI_BASE_URL='${{ secrets.OPENAI_BASE_URL }}' \
-          knowledge-graph-builder \
-          python src/main.py --topic "${{ github.event.inputs.topic }}"
+        sudo apt-get update
+        sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
+
+    # 步骤5：安装Python包
+    - name: Install Python dependencies
+      run: python -m pip install -r requirements.txt
+
+    # 步骤6：运行主程序
+    # 脚本中的PaddleOCR()会自动使用缓存的模型（如果存在）
+    - name: Run Knowledge Graph Builder
+      env:
+        # 注入您的密钥
+        GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+        # 明确设置HOME目录，有些库需要它来找到缓存位置
+        HOME: /home/runner
+      run: |
+        python src/main.py --topic "${{ github.event.inputs.topic }}"
