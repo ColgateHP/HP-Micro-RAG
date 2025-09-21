@@ -4,7 +4,7 @@ import os
 # 从环境变量中获取，确保代码的灵活性和安全性
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL") # 适配私有化部署
-LLM_MODEL_NAME = "gpt-4-turbo"
+LLM_MODEL_NAME = "gpt-4o-mini"
 EMBEDDING_MODEL_NAME = "text-embedding-3-small"
 
 # --- Text Processing Configuration ---
