@@ -1,0 +1,13 @@
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+PyMuPDF
+python-docx
+langchain
+langchain-openai
+networkx
+beautifulsoup4
+requests
+faiss-cpu
+langchain_community
+tiktoken
