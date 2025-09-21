@@ -1,0 +1,26 @@
+name: Advanced RAG Knowledge Graph Builder (Docker)
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: '培养基管理知识图谱'
+        required: true
+        default: '培养基管理'
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Build and Run Docker Container
+      run: |
+        docker build -t knowledge-graph-builder .
+        docker run \
+          --env GCP_SA_KEY='${{ secrets.GCP_SA_KEY }}' \
+          --env OPENAI_API_KEY='${{ secrets.OPENAI_API_KEY }}' \
+          --env OPENAI_BASE_URL='${{ secrets.OPENAI_BASE_URL }}' \
+          knowledge-graph-builder \
+          python src/main.py --topic "${{ github.event.inputs.topic }}"
