@@ -2,7 +2,7 @@ import json
 import networkx as nx
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from src import config
+from . import config
 
 def extract_graph_from_chunks(text_chunks: list[str]) -> nx.DiGraph:
     llm = ChatOpenAI(
