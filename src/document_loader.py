@@ -1,13 +1,15 @@
 import os, io, re, json
 from typing import List
-import fitz  # PyMuPDF
+import fitz
 from docx import Document
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from googleapiclient.http import MediaIoBaseDownload
 from langchain.docstore.document import Document as LangchainDocument
-from src.ocr_processor import get_text_from_image
+from .ocr_processor import get_text_from_image
+
+
 
 def get_gdrive_service():
     creds_json = os.getenv('GCP_SA_KEY', '{}')
