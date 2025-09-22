@@ -1,10 +1,11 @@
 import os, re, argparse
 from datetime import datetime
 from googleapiclient.http import MediaFileUpload
-from src.document_loader import load_documents_from_txt, get_gdrive_service
-from src.knowledge_graph import extract_graph_from_chunks
-from src.rag_pipeline import create_rag_pipeline
-from src.markdown_generator import generate_markdown
+from .document_loader import load_documents_from_txt, get_gdrive_service
+from .knowledge_graph import extract_graph_from_chunks
+from .rag_pipeline import create_rag_pipeline
+from .markdown_generator import generate_markdown
+
 
 INPUT_FILE_PATH = "source_documents.txt"
 OUTPUT_FOLDER_URL = "https://drive.google.com/drive/folders/1HgLq4YfqOINtfzaFCy-bP44skJB0AXFs"
