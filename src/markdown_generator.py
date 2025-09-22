@@ -1,4 +1,4 @@
-from src.rag_pipeline import get_entity_summary
+from .rag_pipeline import get_entity_summary
 
 def generate_markdown(graph, retriever, summary_chain, topic: str) -> str:
     title = f"{topic}知识图谱"
