@@ -53,4 +53,4 @@ jobs:
         OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
         HOME: /home/runner
       run: |
-        python src/main.py --topic "${{ github.event.inputs.topic }}"
+        python -m src.main --topic "${{ github.event.inputs.topic }}"
