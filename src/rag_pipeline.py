@@ -2,7 +2,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.prompts import PromptTemplate
-from src import config
+from . import config
 
 def create_rag_pipeline(documents):
     text_splitter = RecursiveCharacterTextSplitter(
